@@ -24,6 +24,7 @@ workflow gambit_query {
     String gambit_docker = gambit.docker_image
     Float gambit_closest_distance = gambit.closest_distance
     String gambit_predicted_taxon = gambit.predicted_taxon
+    String gambit_predicted_strain = gambit.predicted_strain
     String gambit_predicted_rank = gambit.predicted_rank
     String gambit_predicted_threshold = gambit.predicted_threshold
     String gambit_next_taxon = gambit.next_taxon

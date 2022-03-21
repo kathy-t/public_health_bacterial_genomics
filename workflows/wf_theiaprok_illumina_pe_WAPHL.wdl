@@ -11,6 +11,10 @@ import "../tasks/species_typing/task_serotypefinder.wdl" as serotypefinder
 import "../tasks/task_versioning.wdl" as versioning
 import "../tasks/utilities/task_broad_terra_tools.wdl" as terra_tools
 
+import "../tasks/task_qc_utils.wdl" as qc
+import "../tasks/task_taxon_id.wdl" as taxon_id
+import "../tasks/task_denovo_assembly.wdl" as assembly
+
 workflow theiaprok_illumina_pe {
   meta {
     description: "De-novo genome assembly, taxonomic ID, and QC of paired-end bacterial NGS data"
@@ -30,6 +34,12 @@ workflow theiaprok_illumina_pe {
       samplename = samplename,
       read1_raw = read1_raw,
       read2_raw = read2_raw
+  }
+  call taxon_id.kraken2 {
+    input:
+    samplename = samplename,
+    read1 = read1_raw,
+    read2 = read2_raw
   }
   call shovill.shovill_pe {
     input:
@@ -167,6 +177,10 @@ workflow theiaprok_illumina_pe {
     String bbduk_docker = read_QC_trim.bbduk_docker
     Float r1_mean_q = cg_pipeline.r1_mean_q
     Float? r2_mean_q = cg_pipeline.r2_mean_q
+
+    String  kraken_version              = kraken2.version
+    Float   kraken_human                = kraken2.percent_human
+    String  kraken_report               = kraken2.kraken_report
     #Assembly and Assembly QC
     File assembly_fasta = shovill_pe.assembly_fasta
     File contigs_gfa = shovill_pe.contigs_gfa
@@ -183,6 +197,7 @@ workflow theiaprok_illumina_pe {
     File gabmit_closest_genomes = gambit.gambit_closest_genomes_file
     String gambit_predicted_taxon = gambit.gambit_predicted_taxon
     String gambit_predicted_taxon_rank = gambit.gambit_predicted_taxon_rank
+    String gambit_predicted_strain = gambit.gambit_predicted_strain
     String gambit_version = gambit.gambit_version
     String gambit_db_version = gambit.gambit_db_version
     String gambit_docker = gambit.gambit_docker
