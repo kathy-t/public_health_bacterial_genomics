@@ -174,6 +174,7 @@ workflow theiaprok_illumina_pe {
     Int num_reads_clean2 = read_QC_trim.fastq_scan_clean2
     String num_reads_clean_pairs = read_QC_trim.fastq_scan_clean_pairs
     String trimmomatic_version = read_QC_trim.trimmomatic_version
+    String trimmomatic_software = read_QC_trim.trimmomatic_pe_software
     String bbduk_docker = read_QC_trim.bbduk_docker
     Float r1_mean_q = cg_pipeline.r1_mean_q
     Float? r2_mean_q = cg_pipeline.r2_mean_q
