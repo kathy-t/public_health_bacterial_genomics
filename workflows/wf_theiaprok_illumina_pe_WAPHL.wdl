@@ -41,6 +41,12 @@ workflow theiaprok_illumina_pe {
     read1 = read1_raw,
     read2 = read2_raw
   }
+  call taxon_id.test_kraken2 {
+    input:
+    samplename = samplename,
+    read1 = read1_raw,
+    read2 = read2_raw
+  }
   call shovill.shovill_pe {
     input:
       samplename = samplename,
